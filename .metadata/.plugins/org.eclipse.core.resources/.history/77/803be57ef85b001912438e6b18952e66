@@ -1,0 +1,22 @@
+package busStation;
+
+import java.sql.*;
+
+public class db {
+
+	Connection conn;
+	Statement st;
+	ResultSet rs;
+	
+	public db() {
+		
+		connect();
+		
+	}
+	public void connect() {
+		
+		
+		
+	}
+	
+}

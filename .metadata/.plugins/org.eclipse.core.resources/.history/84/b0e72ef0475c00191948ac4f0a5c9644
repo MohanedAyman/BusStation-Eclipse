@@ -1,0 +1,7 @@
+ackage busStation;
+
+public class Vehicle {
+	int seats;
+
+
+}

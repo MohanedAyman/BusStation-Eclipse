@@ -1,0 +1,7 @@
+package busStation;
+
+public class Vehicle {
+	int seats;
+
+
+}

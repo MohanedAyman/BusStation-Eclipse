@@ -1,0 +1,261 @@
+package busStation;
+
+import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.*;
+
+public abstract class AdminActions 
+{
+	 static ArrayList<Tickets> list=new ArrayList<Tickets>();
+	 static HashMap<String, String> employeeAccounts = new HashMap<>();
+	 static HashMap<String, String> passengersAccounts = new HashMap<>();
+	 static ArrayList<User> userlist=new ArrayList<User>();
+	
+	
+   /* 
+    public static ArrayList<Tickets> getList() {return list;}
+	public static void setList(ArrayList<Tickets> list) {AdminActions.list = list;}
+	public static HashMap<String, String> getEmployeeAccounts() {return employeeAccounts;}
+	public static void setEmployeeAccounts(HashMap<String, String> employeeAccounts) {AdminActions.employeeAccounts = employeeAccounts;}
+	public static HashMap<String, String> getPassengersAccounts() {return passengersAccounts;}
+	public static void setPassengersAccounts(HashMap<String, String> passengersAccounts) {AdminActions.passengersAccounts = passengersAccounts;}
+	public static ArrayList<User> getUserlist() {return userlist;}
+    public static void setUserlist(ArrayList<User> userlist) {AdminActions.userlist = userlist;}
+    */
+	 public static int verifyAccount(int accounttype,String user,String pass) {
+		 int i=-1;
+		 if (accounttype==1)
+		 while(++i<userlist.size()) {
+			 if (userlist.get(i) instanceof Passenger)	 
+				 if (user.equals(userlist.get(i).getUsername())&&pass.equals(userlist.get(i).getPassword()))
+				 return i;}
+		 
+		 else if (accounttype==2)
+			 while(++i<userlist.size()) {
+				 if (userlist.get(i) instanceof Driver)	 
+			 if (user.equals(userlist.get(i).getUsername())&&pass.equals(userlist.get(i).getPassword()))
+					 return i;}
+		 
+		 else if (accounttype==3)
+			 while(++i<userlist.size()) {
+				 if (userlist.get(i) instanceof Manger)	
+	 if (user.equals(userlist.get(i).getUsername())&&pass.equals(userlist.get(i).getPassword()))
+					
+		 
+		 return i;}
+		 return -1;
+			 
+		 
+	 }
+
+	 public static int searchAccounts(String name) {
+		 int i=0;
+		 while(i<userlist.size()) {	 
+		 if (name.equals(userlist.get(i).getName()))
+			 i++;
+				 return i;}		
+		 return -1;
+	 }
+	 public static int searchTickets(String tickno) {
+		 int i=0;
+		 while(i<list.size()) {	 
+		 if (tickno!=list.get(i).getTicketNo())
+			 i++;
+		 else
+				 return i;}		
+		 return -1;
+	 }
+	 
+	 
+	 
+	/*public static ArrayList<Tickets> LoadFromFile(){
+		list.clear();
+		File file = new File("list.txt");
+	    try {
+	        FileInputStream f = new FileInputStream(file);
+	        ObjectInputStream objectIn = new ObjectInputStream(f);
+		list=(ArrayList)objectIn.readObject(); 
+	        objectIn.close();
+	return list;
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        return list;
+	    }
+	}*/
+
+
+
+	public static void ticketsSaveToFile(){
+		File file = new File("list.txt");
+		 try {
+			 
+	         FileOutputStream f = new FileOutputStream(file);
+	         ObjectOutputStream o = new ObjectOutputStream(f);
+	         
+	for(int i=0;i<list.size();i++)
+	         o.writeObject(list.get(i));
+	         o.close();
+
+	     } catch (Exception ex) {
+	         ex.printStackTrace();
+	     }
+	 }
+	    
+
+	public static void ticketsReadFromFile(){
+		File file = new File("list.txt");
+		 try {
+			 
+	         FileInputStream f = new FileInputStream(file);
+	         ObjectInputStream o = new ObjectInputStream(f);
+	         while(f.available() > 0)
+	     list.add((Tickets)o.readObject());
+	         o.close();
+
+	     } catch (Exception ex) {
+	         ex.printStackTrace();
+	     }
+	 }
+
+	public static void printArrayList() {
+		for(int i=0;i<list.size();i++) {
+			list.get(i).printAll();
+			}}
+	
+
+	public static void userSaveToFile(){
+		File file = new File("userlist.txt");
+		 try {
+			 
+	         FileOutputStream f = new FileOutputStream(file);
+	         ObjectOutputStream o = new ObjectOutputStream(f);
+	         
+	for(int i=0;i<userlist.size();i++)
+	         o.writeObject(userlist.get(i));
+	         o.close();
+
+	     } catch (Exception ex) {
+	         ex.printStackTrace();
+	     }
+	 }
+	    
+
+	public static void userReadFromFile(){
+		File file = new File("userlist.txt");
+		 try {
+			 
+	         FileInputStream f = new FileInputStream(file);
+	         ObjectInputStream o = new ObjectInputStream(f);
+	         while(f.available() > 0)
+	     userlist.add((User)o.readObject());
+	         o.close();
+
+	     } catch (Exception ex) {
+	         ex.printStackTrace();
+	     }
+	 }
+	
+	public static void userprint(){
+		for(int i=0;i<userlist.size();i++) {
+			if(userlist.get(i) instanceof User)
+			System.out.println(userlist.get(i).getName());
+			}}
+
+	public static void userret(){
+		for(int i=0;i<userlist.size();i++) {
+			if(userlist.get(i) instanceof User)
+			System.out.println(userlist.get(i).getName());
+			}}
+
+	public static String[][] ticketsRet(){
+		String[][] str= new String[10][list.size()];
+		for(int i=0;i<list.size();i++) {
+		 str[i] =list.get(i).returnAll();
+			
+			}
+	return str;	
+	}
+	
+	/*
+	 	public static void employeeHashSave() {
+		File file = new File("emplyeelist.txt");
+		try
+		{
+		   BufferedWriter f = new BufferedWriter(new FileWriter(file));
+		   for(String p:employeeAccounts.keySet())
+		   {
+		      f.write(p + "," + employeeAccounts.get(p));
+		      f.newLine();
+		   }
+		   f.close();
+		}catch (Exception e) {
+			e.printStackTrace();
+	}}
+	
+public static void employeeHashLoad() {
+		try
+		{File file = new File("emplyeelist.txt");
+		   BufferedReader f = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+		   String a;
+		   while((a = f.readLine()) != null)
+		   {
+		      String[] s = a.split("[,]", 2);
+		      if(s.length != 2)continue;
+		      String p = s[0].replaceAll(" ", "");
+		      String b = s[1].replaceAll(" ", "");
+		      employeeAccounts.put(p, b);
+		   }
+		   f.close();
+		}catch (Exception e) {
+			e.printStackTrace();
+	}}
+	public static void passengerHashSave() {
+		File file = new File("passengerlist.txt");
+		try
+		{
+		   BufferedWriter f = new BufferedWriter(new FileWriter(file));
+		   for(Map.Entry m:passengersAccounts.entrySet())
+		   {
+		     
+		   }
+		   }catch (Exception e) {
+				e.printStackTrace();
+		}}
+	
+	public static void passengerHashLoad() {
+	try
+	{File file = new File("passengerlist.txt");
+	   BufferedReader f = new BufferedReader(new InputStreamReader(new FileInputStream("passengerlist.txt")));
+	   String a;
+	   while((a = f.readLine()) != null)
+	   {
+	      String[] s = a.split("[,]", 2);
+	      if(s.length != 2)continue;
+	      String p = s[0].replaceAll(" ", "");
+	      String b = s[1].replaceAll(" ", "");
+	      passengersAccounts.put(p, b);
+	   }
+	   f.close();
+	}catch (Exception e) {
+		e.printStackTrace();
+}}
+
+	
+	public static void passengerprint() {
+		  for(Map.Entry m:passengersAccounts.entrySet()){    
+	           System.out.println(m.getKey()+" "+m.getValue());    
+	          }  
+	}
+	public static void emplyeeprint() {
+		  for(Map.Entry m:employeeAccounts.entrySet()){    
+	           System.out.println(m.getKey()+" "+m.getValue());    
+	          }  
+	}
+
+*/
+}
+
